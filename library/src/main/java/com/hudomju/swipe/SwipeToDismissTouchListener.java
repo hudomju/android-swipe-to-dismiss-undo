@@ -66,7 +66,9 @@ import com.hudomju.swipe.adapter.ViewAdapter;
  * <p>This class Requires API level 12 or later due to use of {@link
  * android.view.ViewPropertyAnimator}.</p>
  */
-public class SwipeToDismissTouchListener<SomeCollectionView extends ViewAdapter> implements View.OnTouchListener {
+public class SwipeToDismissTouchListener<SomeCollectionView extends ViewAdapter> implements
+        View.OnTouchListener {
+
     // Cached ViewConfiguration and system-wide constant values
     private int mSlop;
     private int mMinFlingVelocity;
@@ -75,7 +77,7 @@ public class SwipeToDismissTouchListener<SomeCollectionView extends ViewAdapter>
 
     // Fixed properties
     private SomeCollectionView mRecyclerView;
-    private DismissCallbacks mCallbacks;
+    private DismissCallbacks<SomeCollectionView> mCallbacks;
     private int mViewWidth = 1; // 1 and not 0 to prevent dividing by zero
 
     // Transient properties
