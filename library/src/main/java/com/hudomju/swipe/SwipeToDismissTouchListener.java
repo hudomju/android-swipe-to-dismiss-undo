@@ -20,6 +20,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.graphics.Rect;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
@@ -32,15 +33,15 @@ import android.widget.ListView;
 import com.hudomju.swipe.adapter.ViewAdapter;
 
 /**
- * A {@link android.view.View.OnTouchListener} that makes the list items in a
- * {@link android.support.v7.widget.RecyclerView} dismissable.
- * {@link android.support.v7.widget.RecyclerView} is given special treatment because by default it
- * handles touches for its list items... i.e. it's in charge of drawing the pressed state (the list
- * selector), handling list item clicks, etc.
+ * A {@link android.view.View.OnTouchListener} that makes the list items in a collection view
+ * dismissable.
+ * It is given special treatment because by default it handles touches for its list items...
+ * i.e. it's in charge of drawing the pressed state (the list selector), handling list item
+ * clicks, etc.
  *
  * <p>After creating the listener, the caller should also call
- * {@link android.widget.ListView#setOnScrollListener(android.widget.AbsListView.OnScrollListener)}, passing
- * in the scroll listener returned by {@link #makeScrollListener()}. If a scroll listener is
+ * {@link android.widget.ListView#setOnScrollListener(android.widget.AbsListView.OnScrollListener)},
+ * passing in the scroll listener returned by {@link #makeScrollListener()}. If a scroll listener is
  * already assigned, the caller should still pass scroll changes through to this listener. This will
  * ensure that this {@link SwipeToDismissTouchListener} is paused during list view
  * scrolling.</p>
@@ -50,7 +51,7 @@ import com.hudomju.swipe.adapter.ViewAdapter;
  * <pre>
  * SwipeDismissRecyclerViewTouchListener touchListener =
  *         new SwipeDismissRecyclerViewTouchListener(
- *                 listView,
+ *                 new RecyclerViewAdapter(recyclerView),
  *                 new SwipeDismissRecyclerViewTouchListener.OnDismissCallback() {
  *                     public void onDismiss(ListView listView, int[] reverseSortedPositions) {
  *                         for (int position : reverseSortedPositions) {
@@ -93,9 +94,9 @@ public class SwipeToDismissTouchListener<SomeCollectionView extends ViewAdapter>
 
     public class RowContainer {
 
-        View container;
-        View dataContainer;
-        View undoContainer;
+        final View container;
+        final View dataContainer;
+        final View undoContainer;
         boolean dataContainerHasBeenDismissed;
 
         public RowContainer(ViewGroup container) {
@@ -359,7 +360,7 @@ public class SwipeToDismissTouchListener<SomeCollectionView extends ViewAdapter>
         }
 
         @Override
-        public int compareTo(PendingDismissData other) {
+        public int compareTo(@NonNull PendingDismissData other) {
             // Sort by descending position
             return other.position - position;
         }
@@ -436,7 +437,8 @@ public class SwipeToDismissTouchListener<SomeCollectionView extends ViewAdapter>
         animator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                mCallbacks.onDismiss(mRecyclerView, pendingDismissData.position);
+                if (mCallbacks.canDismiss(pendingDismissData.position))
+                    mCallbacks.onDismiss(mRecyclerView, pendingDismissData.position);
                 pendingDismissData.rowContainer.dataContainer.post(new Runnable() {
                     @Override
                     public void run() {
