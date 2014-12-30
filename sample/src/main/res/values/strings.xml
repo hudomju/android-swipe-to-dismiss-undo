@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">android-swipe-to-dismiss-undo</string>
+    <string name="list_view">List View</string>
+    <string name="recycler_view">Recycler View</string>
+</resources>
