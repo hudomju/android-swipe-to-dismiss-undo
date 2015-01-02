@@ -4,6 +4,10 @@ android-swipe-to-dismiss-undo
 Library to make the items in a `ListView` or `RecyclerView` dismissable with the possibility to undo it, using your own view to provide this functionality like the Gmail app for Android does.
 
 
+
+<img src="sample.gif">
+
+
 Usage
 ==============
 
