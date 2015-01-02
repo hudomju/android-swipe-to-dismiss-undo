@@ -24,18 +24,18 @@ final SwipeToDismissTouchListener<ListViewAdapter> touchListener =
                                 adapter.remove(position);
                             }
                         });
-        listView.setOnTouchListener(touchListener);
-        listView.setOnScrollListener((AbsListView.OnScrollListener) touchListener.makeScrollListener());
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (touchListener.existPendingDismisses()) {
-                    touchListener.undoPendingDismiss();
-                } else {
-                    Toast.makeText(ListViewActivity.this, "Position " + position, LENGTH_SHORT).show();
-                }
-            }
-        });
+listView.setOnTouchListener(touchListener);
+listView.setOnScrollListener((AbsListView.OnScrollListener) touchListener.makeScrollListener());
+listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if (touchListener.existPendingDismisses()) {
+            touchListener.undoPendingDismiss();
+        } else {
+            Toast.makeText(ListViewActivity.this, "Position " + position, LENGTH_SHORT).show();
+        }
+    }
+});
 </code></pre>
 
 With a `RecyclerView`:
@@ -56,21 +56,21 @@ final SwipeToDismissTouchListener<RecyclerViewAdapter> touchListener =
                             }
                         });
 
-        recyclerView.setOnTouchListener(touchListener);
-        recyclerView.setOnScrollListener((RecyclerView.OnScrollListener) touchListener.makeScrollListener());
-        recyclerView.addOnItemTouchListener(new SwipeableItemClickListener(this,
-                new OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int position) {
-                        if (view.getId() == R.id.txt_delete) {
-                            touchListener.processPendingDismisses();
-                        } else if (view.getId() == R.id.txt_undo) {
-                            touchListener.undoPendingDismiss();
-                        } else { // R.id.txt_data
-                            Toast.makeText(RecyclerViewActivity.this, "Position " + position, LENGTH_SHORT).show();
-                        }
-                    }
-                }));
+recyclerView.setOnTouchListener(touchListener);
+recyclerView.setOnScrollListener((RecyclerView.OnScrollListener)touchListener.makeScrollListener());
+recyclerView.addOnItemTouchListener(new SwipeableItemClickListener(this,
+        new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                if (view.getId() == R.id.txt_delete) {
+                    touchListener.processPendingDismisses();
+                } else if (view.getId() == R.id.txt_undo) {
+                    touchListener.undoPendingDismiss();
+                } else { // R.id.txt_data
+                    Toast.makeText(context, "Position " + position, LENGTH_SHORT).show();
+                }
+            }
+        }));
 </code></pre>
 
 
