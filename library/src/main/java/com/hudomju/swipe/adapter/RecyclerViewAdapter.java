@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AbsListView;
 
 public class RecyclerViewAdapter implements ViewAdapter {
 
@@ -51,5 +52,19 @@ public class RecyclerViewAdapter implements ViewAdapter {
     @Override
     public void onTouchEvent(MotionEvent e) {
         mRecyclerView.onTouchEvent(e);
+    }
+
+    @Override
+    public RecyclerView.OnScrollListener makeScrollListener(final AbsListView.OnScrollListener l) {
+        return new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                l.onScrollStateChanged(null, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            }
+        };
     }
 }

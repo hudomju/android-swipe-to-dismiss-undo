@@ -3,6 +3,7 @@ package com.hudomju.swipe.adapter;
 import android.content.Context;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.ListView;
 
 public class ListViewAdapter implements ViewAdapter {
@@ -51,5 +52,10 @@ public class ListViewAdapter implements ViewAdapter {
     @Override
     public void onTouchEvent(MotionEvent e) {
         mListView.onTouchEvent(e);
+    }
+
+    @Override
+    public AbsListView.OnScrollListener makeScrollListener(AbsListView.OnScrollListener listener) {
+        return listener;
     }
 }

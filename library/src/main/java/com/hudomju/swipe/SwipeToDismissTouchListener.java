@@ -21,7 +21,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.graphics.Rect;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
@@ -169,18 +168,18 @@ public class SwipeToDismissTouchListener<SomeCollectionView extends ViewAdapter>
      *
      * @see SwipeToDismissTouchListener
      */
-    public RecyclerView.OnScrollListener makeScrollListener() {
-        return new RecyclerView.OnScrollListener() {
+    public Object makeScrollListener() {
+        return mRecyclerView.makeScrollListener(new AbsListView.OnScrollListener() {
             @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            public void onScrollStateChanged(AbsListView absListView, int scrollState) {
                 processPendingDismisses();
-                setEnabled(newState != AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL);
+                setEnabled(scrollState != AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL);
             }
 
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            public void onScroll(AbsListView absListView, int i, int i1, int i2) {
             }
-        };
+        });
     }
 
     @Override

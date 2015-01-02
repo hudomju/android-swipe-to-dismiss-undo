@@ -3,9 +3,11 @@ package com.hudomju.swipe.adapter;
 import android.content.Context;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AbsListView;
 
 /**
- * Adapter the given View due to non-compatible interfaces but similar functionality.
+ * Interface for a given UI element to help extend the swipe-to-dismiss-undo pattern to other
+ * elements.
  */
 public interface ViewAdapter {
     Context getContext();
@@ -16,4 +18,5 @@ public interface ViewAdapter {
     int getChildPosition(View position);
     void requestDisallowInterceptTouchEvent(boolean disallowIntercept);
     void onTouchEvent(MotionEvent e);
+    Object makeScrollListener(AbsListView.OnScrollListener listener);
 }
