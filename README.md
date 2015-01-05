@@ -9,6 +9,23 @@ it, using your own view to provide this functionality like the Gmail app for And
 <img src="sample.gif">
 
 
+Add the following to your `build.gradle`:
+
+    repositories {
+		mavenCentral()
+	}
+
+	dependencies {
+		compile compile 'com.hudomju:swipe-to-dismiss-undo:1.0'
+	}
+	
+**Or**:
+
+* [Download the latest .jar file][https://oss.sonatype.org/content/repositories/releases/com/hudomju/swipe-to-dismiss-undo/1.0/swipe-to-dismiss-undo-1.0-sources.jar]
+* Add the .jar files to your project's `libs` folder, or add them as external jars to your project's
+ build path.
+
+
 Create a Layout
 ===============
 
