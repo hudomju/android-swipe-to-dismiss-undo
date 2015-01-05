@@ -1,11 +1,82 @@
 android-swipe-to-dismiss-undo
 =============================
 
-Library to make the items in a `ListView` or `RecyclerView` dismissable with the possibility to undo it, using your own view to provide this functionality like the Gmail app for Android does.
+Library to make the items in a `ListView` or `RecyclerView` dismissable with the possibility to undo
+it, using your own view to provide this functionality like the Gmail app for Android does.
 
 
 
 <img src="sample.gif">
+
+
+Create a Layout
+===============
+
+To make an item in the list dismissable, you need ot place a ViewGroup (i.e. FrameLayout) as the 
+root view of your layout. Inside the ViewGroup, add one view that contains the main content for 
+the row (your primary layout when the row hasn't been dismissed yet) and another view that contains 
+the contents of the dismiss layout (i.e. with an undo button).
+
+For example, the following layout uses a FrameLayout with two child views: a TextView to contain 
+the main content (populated by an Adapter at runtime), and a LinearLayout for the undo layout.
+
+<pre><code>
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/lyt_container"
+    android:background="@color/gray_background">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:height="@dimen/list_item_height"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/list_item_padding_sides"
+        android:paddingRight="@dimen/list_item_padding_sides"
+        android:id="@+id/txt_data"
+        android:background="@android:color/white"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:weightSum="3"
+        android:height="@dimen/list_item_height"
+        android:paddingLeft="@dimen/list_item_padding_sides"
+        android:paddingRight="@dimen/list_item_padding_sides">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:id="@+id/txt_delete"
+            android:gravity="center_vertical"
+            android:text="@string/deleted"
+            android:clickable="false"
+            android:layout_weight="2"
+            android:hapticFeedbackEnabled="true"
+            android:textColor="@android:color/white"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:id="@+id/txt_undo"
+            android:text="@string/undo"
+            android:clickable="false"
+            android:layout_weight="1"
+            android:textColor="@color/yellow"/>
+
+        </LinearLayout>
+
+</FrameLayout>
+</code></pre>
+
+NOTE that the second child in the layout (here the LinearLayout), must have the visibility set to
+GONE, or both the data and the undo layout will be displayed in the row at the same time.
 
 
 Usage
