@@ -21,6 +21,14 @@ def isReleaseBuild() {
     return android.defaultConfig.versionName.contains("SNAPSHOT") == false
 }
 
+def getRepositoryUsername() {
+    return hasProperty('NEXUS_USERNAME') ? NEXUS_USERNAME : ""
+}
+
+def getRepositoryPassword() {
+    return hasProperty('NEXUS_PASSWORD') ? NEXUS_PASSWORD : ""
+}
+
 afterEvaluate { project ->
     uploadArchives {
         repositories {
@@ -33,11 +41,11 @@ afterEvaluate { project ->
 
                 repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
                     //read from ~/.gradle/gradle.properties
-                    authentication(userName: sonatypeUsername, password: sonatypePassword)
+                    authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
                 }
                 snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
                     //read from ~/.gradle/gradle.properties
-                    authentication(userName: sonatypeUsername, password: sonatypePassword)
+                    authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
                 }
 
                 pom.project {
