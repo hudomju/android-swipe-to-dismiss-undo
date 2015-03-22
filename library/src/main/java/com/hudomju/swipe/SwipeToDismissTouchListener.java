@@ -122,8 +122,17 @@ public class SwipeToDismissTouchListener<SomeCollectionView extends ViewAdapter>
         boolean canDismiss(int position);
 
         /**
-         * Called when the user has indicated they she would like to dismiss one or more list item
-         * positions.
+         * Called when an item is swiped away by the user and the undo layout is completely visible.
+         * Do NOT remove the list item yet, that should be done in {@link #onDismiss(com.hudomju.swipe.adapter.ViewAdapter, int)}
+         * This may also be called immediately before and item is completely dismissed.
+         *
+         * @param recyclerView The originating {@link android.support.v7.widget.RecyclerView}.
+         * @param position The position of the dismissed item.
+         */
+        void onPendingDismiss(SomeCollectionView recyclerView, int position);
+
+        /**
+         * Called when the item is completely dismissed and removed from the list, after the undo layout is hidden.
          *
          * @param recyclerView The originating {@link android.support.v7.widget.RecyclerView}.
          * @param position The position of the dismissed item.
@@ -385,6 +394,8 @@ public class SwipeToDismissTouchListener<SomeCollectionView extends ViewAdapter>
         dismissView.dataContainerHasBeenDismissed = true;
         dismissView.undoContainer.setVisibility(View.VISIBLE);
         mPendingDismiss = new PendingDismissData(dismissPosition, dismissView);
+        // Notify the callbacks
+        mCallbacks.onPendingDismiss(mRecyclerView, dismissPosition);
     }
 
     /**
@@ -465,3 +476,4 @@ public class SwipeToDismissTouchListener<SomeCollectionView extends ViewAdapter>
         animator.start();
     }
 }
+
