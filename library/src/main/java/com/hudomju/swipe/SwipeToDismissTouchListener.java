@@ -20,6 +20,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.graphics.Rect;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
@@ -91,6 +92,16 @@ public class SwipeToDismissTouchListener<SomeCollectionView extends ViewAdapter>
     private RowContainer mRowContainer;
     private boolean mPaused;
 
+    // Handler to dismiss pending items after a delay
+    private final Handler mHandler;
+    private final Runnable mDismissRunnable = new Runnable() {
+        @Override
+        public void run() {
+            processPendingDismisses();
+        }
+    };
+    private long mDismissDelayMillis = -1; // negative to disable automatic dismissing
+
     public class RowContainer {
 
         final View container;
@@ -157,6 +168,7 @@ public class SwipeToDismissTouchListener<SomeCollectionView extends ViewAdapter>
                 android.R.integer.config_shortAnimTime);
         mRecyclerView = recyclerView;
         mCallbacks = callbacks;
+        mHandler = new Handler();
     }
 
     /**
@@ -166,6 +178,15 @@ public class SwipeToDismissTouchListener<SomeCollectionView extends ViewAdapter>
      */
     public void setEnabled(boolean enabled) {
         mPaused = !enabled;
+    }
+
+    /**
+     * Set the delay after which the pending items will be dismissed when there was no user action.
+     * Set to a negative value to disable automatic dismissing items.
+     * @param dismissDelayMillis The delay between onPendingDismiss and onDismiss calls, in milliseconds.
+     */
+    public void setDismissDelay(long dismissDelayMillis) {
+        this.mDismissDelayMillis = dismissDelayMillis;
     }
 
     /**
@@ -396,6 +417,10 @@ public class SwipeToDismissTouchListener<SomeCollectionView extends ViewAdapter>
         mPendingDismiss = new PendingDismissData(dismissPosition, dismissView);
         // Notify the callbacks
         mCallbacks.onPendingDismiss(mRecyclerView, dismissPosition);
+        // Automatically dismiss the item after a certain delay
+        if(mDismissDelayMillis >= 0)
+            mHandler.removeCallbacks(mDismissRunnable);
+            mHandler.postDelayed(mDismissRunnable, mDismissDelayMillis);
     }
 
     /**
