@@ -16,7 +16,7 @@ Add the following to your `build.gradle`:
 	}
 
 	dependencies {
-		compile compile 'com.hudomju:swipe-to-dismiss-undo:1.0'
+		compile 'com.hudomju:swipe-to-dismiss-undo:1.0'
 	}
 	
 **Or**:
