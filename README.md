@@ -99,69 +99,66 @@ Usage
 
 With a `ListView`:
 
-<pre><code>
-final SwipeToDismissTouchListener<ListViewAdapter> touchListener =
-                new SwipeToDismissTouchListener<>(
-                        new ListViewAdapter(listView),
-                        new SwipeToDismissTouchListener.DismissCallbacks<ListViewAdapter>() {
-                            @Override
-                            public boolean canDismiss(int position) {
-                                return true;
-                            }
+	final SwipeToDismissTouchListener<ListViewAdapter> touchListener =
+	                new SwipeToDismissTouchListener<>(
+	                        new ListViewAdapter(listView),
+	                        new SwipeToDismissTouchListener.DismissCallbacks<ListViewAdapter>() {
+	                            @Override
+	                            public boolean canDismiss(int position) {
+	                                return true;
+	                            }
+	
+	                            @Override
+	                            public void onDismiss(ListViewAdapter view, int position) {
+	                                adapter.remove(position);
+	                            }
+	                        });
+	listView.setOnTouchListener(touchListener);
+	listView.setOnScrollListener((AbsListView.OnScrollListener) touchListener.makeScrollListener());
+	listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+	    @Override
+	    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+	        if (touchListener.existPendingDismisses()) {
+	            touchListener.undoPendingDismiss();
+	        } else {
+	            Toast.makeText(ListViewActivity.this, "Position " + position, LENGTH_SHORT).show();
+	        }
+	    }
+	});
 
-                            @Override
-                            public void onDismiss(ListViewAdapter view, int position) {
-                                adapter.remove(position);
-                            }
-                        });
-listView.setOnTouchListener(touchListener);
-listView.setOnScrollListener((AbsListView.OnScrollListener) touchListener.makeScrollListener());
-listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if (touchListener.existPendingDismisses()) {
-            touchListener.undoPendingDismiss();
-        } else {
-            Toast.makeText(ListViewActivity.this, "Position " + position, LENGTH_SHORT).show();
-        }
-    }
-});
-</code></pre>
 
 With a `RecyclerView`:
 
-<pre><code>
-final SwipeToDismissTouchListener<RecyclerViewAdapter> touchListener =
-                new SwipeToDismissTouchListener<>(
-                        new RecyclerViewAdapter(recyclerView),
-                        new SwipeToDismissTouchListener.DismissCallbacks<RecyclerViewAdapter>() {
-                            @Override
-                            public boolean canDismiss(int position) {
-                                return true;
-                            }
-
-                            @Override
-                            public void onDismiss(RecyclerViewAdapter view, int position) {
-                                adapter.remove(position);
-                            }
-                        });
-
-recyclerView.setOnTouchListener(touchListener);
-recyclerView.setOnScrollListener((RecyclerView.OnScrollListener)touchListener.makeScrollListener());
-recyclerView.addOnItemTouchListener(new SwipeableItemClickListener(this,
-        new OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                if (view.getId() == R.id.txt_delete) {
-                    touchListener.processPendingDismisses();
-                } else if (view.getId() == R.id.txt_undo) {
-                    touchListener.undoPendingDismiss();
-                } else { // R.id.txt_data
-                    Toast.makeText(context, "Position " + position, LENGTH_SHORT).show();
-                }
-            }
-        }));
-</code></pre>
+	final SwipeToDismissTouchListener<RecyclerViewAdapter> touchListener =
+	                new SwipeToDismissTouchListener<>(
+	                        new RecyclerViewAdapter(recyclerView),
+	                        new SwipeToDismissTouchListener.DismissCallbacks<RecyclerViewAdapter>() {
+	                            @Override
+	                            public boolean canDismiss(int position) {
+	                                return true;
+	                            }
+	
+	                            @Override
+	                            public void onDismiss(RecyclerViewAdapter view, int position) {
+	                                adapter.remove(position);
+	                            }
+	                        });
+	
+	recyclerView.setOnTouchListener(touchListener);
+	recyclerView.setOnScrollListener((RecyclerView.OnScrollListener)touchListener.makeScrollListener());
+	recyclerView.addOnItemTouchListener(new SwipeableItemClickListener(this,
+	        new OnItemClickListener() {
+	            @Override
+	            public void onItemClick(View view, int position) {
+	                if (view.getId() == R.id.txt_delete) {
+	                    touchListener.processPendingDismisses();
+	                } else if (view.getId() == R.id.txt_undo) {
+	                    touchListener.undoPendingDismiss();
+	                } else { // R.id.txt_data
+	                    Toast.makeText(context, "Position " + position, LENGTH_SHORT).show();
+	                }
+	            }
+	        }));
 
 
 Special Thanks
