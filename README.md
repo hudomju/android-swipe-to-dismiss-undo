@@ -107,6 +107,11 @@ With a `ListView`:
 	                            public boolean canDismiss(int position) {
 	                                return true;
 	                            }
+	                            
+	                            @Override
+                                public void onPendingDismiss(ListViewAdapter recyclerView, int position) {
+    
+                                }
 	
 	                            @Override
 	                            public void onDismiss(ListViewAdapter view, int position) {
@@ -140,10 +145,17 @@ With a `RecyclerView`:
 	                            public boolean canDismiss(int position) {
 	                                return true;
 	                            }
+	                            
+	                            @Override
+                                public void onPendingDismiss(ListViewAdapter recyclerView, int position) {
+    
+                                }
 	
 	                            @Override
 	                            public void onDismiss(RecyclerViewAdapter view, int position) {
 	                                adapter.remove(position);
+	                                adapter.notifyItemRemoved(position);
+	                                adapter.notifyItemRangeChanged(position, adapter.getItemCount());
 	                            }
 	                        });
 	// Dismiss the item automatically after 3 seconds
