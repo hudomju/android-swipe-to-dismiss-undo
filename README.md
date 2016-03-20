@@ -113,6 +113,9 @@ With a `ListView`:
 	                                adapter.remove(position);
 	                            }
 	                        });
+	// Dismiss the item automatically after 3 seconds
+	touchListener.setDismissDelay(3000);
+	
 	listView.setOnTouchListener(touchListener);
 	listView.setOnScrollListener((AbsListView.OnScrollListener) touchListener.makeScrollListener());
 	listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -143,6 +146,8 @@ With a `RecyclerView`:
 	                                adapter.remove(position);
 	                            }
 	                        });
+	// Dismiss the item automatically after 3 seconds
+    touchListener.setDismissDelay(3000);
 	
 	recyclerView.setOnTouchListener(touchListener);
 	recyclerView.setOnScrollListener((RecyclerView.OnScrollListener)touchListener.makeScrollListener());
