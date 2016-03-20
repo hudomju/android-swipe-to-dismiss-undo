@@ -44,6 +44,11 @@ public class RecyclerViewActivity extends Activity {
                             }
 
                             @Override
+                            public void onPendingDismiss(RecyclerViewAdapter recyclerView, int position) {
+
+                            }
+
+                            @Override
                             public void onDismiss(RecyclerViewAdapter view, int position) {
                                 adapter.remove(position);
                             }

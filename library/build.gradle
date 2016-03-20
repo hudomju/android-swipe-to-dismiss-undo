@@ -1,14 +1,14 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion "21.1.1"
+    compileSdkVersion 23
+    buildToolsVersion "23.0.2"
 
     defaultConfig {
         minSdkVersion 15
-        targetSdkVersion 21
+        targetSdkVersion 23
         versionCode 1
-        versionName "1.0"
+        versionName "1.0-SNAPSHOT"
     }
     buildTypes {
         release {
@@ -16,10 +16,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
 }
 
 dependencies {
-    provided 'com.android.support:recyclerview-v7:21.0.3'
+    provided 'com.android.support:recyclerview-v7:23.1.1'
 }
 
 android.libraryVariants.all { variant ->
@@ -31,7 +35,7 @@ android.libraryVariants.all { variant ->
     task("javadoc${variant.name.capitalize()}", type: Javadoc) {
         description "Generates Javadoc for $variant.name."
         source = variant.javaCompile.source
-        ext.androidJar = files(plugins.findPlugin("com.android.library").getBootClasspath())
+        ext.androidJar = files("${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar")
         classpath = files(variant.javaCompile.classpath.files) + ext.androidJar
         options.memberLevel = JavadocMemberLevel.PUBLIC
         options.links("http://docs.oracle.com/javase/7/docs/api/");
