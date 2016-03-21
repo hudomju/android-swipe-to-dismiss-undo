@@ -238,8 +238,8 @@ public class SwipeToDismissTouchListener<SomeCollectionView extends ViewAdapter>
                     child = mRecyclerView.getChildAt(i);
                     child.getHitRect(rect);
                     if (rect.contains(x, y)) {
-                        assert(child instanceof ViewGroup &&
-                                ((ViewGroup) child).getChildCount() == 2) :
+                        assert child instanceof ViewGroup &&
+                                ((ViewGroup) child).getChildCount() == 2 :
                                 "Each child needs to extend from ViewGroup and have two children";
 
                         boolean dataContainerHasBeenDismissed = mPendingDismiss != null &&
@@ -355,7 +355,7 @@ public class SwipeToDismissTouchListener<SomeCollectionView extends ViewAdapter>
                 float deltaY = motionEvent.getRawY() - mDownY;
                 if (Math.abs(deltaX) > mSlop && Math.abs(deltaY) < Math.abs(deltaX) / 2) {
                     mSwiping = true;
-                    mSwipingSlop = (deltaX > 0 ? mSlop : -mSlop);
+                    mSwipingSlop = deltaX > 0 ? mSlop : -mSlop;
                     mRecyclerView.requestDisallowInterceptTouchEvent(true);
 
                     // Cancel ListView's touch (un-highlighting the item)
