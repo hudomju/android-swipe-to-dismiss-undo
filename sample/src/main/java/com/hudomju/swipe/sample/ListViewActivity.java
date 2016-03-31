@@ -105,7 +105,7 @@ public class ListViewActivity extends Activity {
         static class ViewHolder {
             TextView dataTextView;
             ViewHolder(View view) {
-                dataTextView = ((TextView) view.findViewById(R.id.txt_data));
+                dataTextView = (TextView) view.findViewById(R.id.txt_data);
                 view.setTag(this);
             }
         }

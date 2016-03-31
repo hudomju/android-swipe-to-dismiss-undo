@@ -49,7 +49,7 @@ public class SwipeableItemClickListener implements RecyclerView.OnItemTouchListe
         while (childView instanceof ViewGroup && v != null) {
             x -= childView.getLeft();
             y -= childView.getTop();
-            v = findChildViewUnder(((ViewGroup) childView), x, y);
+            v = findChildViewUnder((ViewGroup) childView, x, y);
             if (v != null) {
                 childView = v;
             }

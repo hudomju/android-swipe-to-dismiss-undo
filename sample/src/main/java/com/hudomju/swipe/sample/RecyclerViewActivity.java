@@ -112,7 +112,7 @@ public class RecyclerViewActivity extends Activity {
             TextView dataTextView;
             MyViewHolder(View view) {
                 super(view);
-                dataTextView = ((TextView) view.findViewById(R.id.txt_data));
+                dataTextView = (TextView) view.findViewById(R.id.txt_data);
             }
         }
     }
